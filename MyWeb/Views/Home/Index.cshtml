@@ -1,8 +1,42 @@
-﻿@{
+﻿@model IEnumerable<Book>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>List of Books</h2>
+    <div class="text-left">
+        <table class="table table-striped">
+            <tr>
+                @foreach (var property in typeof(Book).GetProperties())
+                {
+                    <th>
+                        @property.Name
+                    </th>
+                }
+            </tr>
+            @foreach (Book book in Model)
+            {
+                <tr>
+                    @foreach (var property in typeof(Book).GetProperties())
+                    {
+                        <td style="max-width: 450px;">
+                            @if (property.GetValue(book) is DateTime)
+                            {
+                                @book.ReleaseDate.ToString("dd/MM/yyyy")
+                            }
+                            else if (property.GetValue(book) is decimal)
+                            {
+                                @book.Price.ToString("c")
+                            }
+                            else
+                            {
+                                @property.GetValue(book)
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
 </div>

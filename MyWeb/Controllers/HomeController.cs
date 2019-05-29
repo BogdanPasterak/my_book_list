@@ -10,9 +10,16 @@ namespace MyWeb.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IBookRepository _bookRepository;
+
+        public HomeController(IBookRepository bookRepository)
+        {
+            _bookRepository = bookRepository;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            return View(_bookRepository.GetBooks().OrderBy(b => b.Price));
         }
 
         public IActionResult Privacy()
